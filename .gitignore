@@ -1,4 +1,6 @@
 __pycache__
+*.pyc
 .venv/
 .vscode/
 .env
+enrollment/__pycache__

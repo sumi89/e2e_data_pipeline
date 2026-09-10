@@ -1,13 +1,9 @@
-import logging
+
 import pyodbc
 from config import MSSQL_CONN_STR
+from logger import get_logger
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(name)s - %(message)s"
-)
-
-logger = logging.getLogger("DatabaseConnection")
+logger = get_logger("DatabaseConnection")
 
 logger.info("Starting database connection...")
 

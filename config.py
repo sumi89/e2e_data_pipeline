@@ -22,4 +22,20 @@ MSSQL_CONN_STR = (
     f"Trusted_Connection={DB_TRUSTED_CONNECTION};"
 )
 
+###########
+# Source Server
+SOURCE_CONN_STR = (
+    f"DRIVER={{{os.getenv('SOURCE_DRIVER')}}};"
+    f"SERVER={os.getenv('SOURCE_SERVER')};"
+    f"DATABASE={os.getenv('SOURCE_DATABASE')};"
+    f"Trusted_Connection={os.getenv('SOURCE_TRUSTED_CONNECTION')};"
+)
 
+
+# Target Server
+TARGET_CONN_STR = (
+    f"DRIVER={{{os.getenv('TARGET_DRIVER')}}};"
+    f"SERVER={os.getenv('TARGET_SERVER')};"
+    f"DATABASE={os.getenv('TARGET_DATABASE')};"
+    f"Trusted_Connection={os.getenv('TARGET_TRUSTED_CONNECTION')};"
+)
