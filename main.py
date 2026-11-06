@@ -22,8 +22,8 @@ def main():
         # READ FROM SOURCE
         source_cursor = source_conn.cursor()
         source_query = """
-            SELECT TOP (5)
-            FROM dbo.CBM008_BasicInfo_2
+            SELECT *
+            FROM dbo.CBM008_Sal_Manual
         """
         source_cursor.execute(source_query)
 
@@ -53,6 +53,9 @@ def main():
 
         target_cursor.close()
 
+    except Exception as e:
+        logger.critical(f"Pipeline failure: {e}", exc_info=True)
+        sys.exit(1)
 
 '''
 def main():
