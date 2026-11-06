@@ -1,55 +1,91 @@
 import sys
-from db_connection import get_db_connection, run_diagnostics
+from db_connection import get_db_connection, run_diagnostics, test_table_read
 from logger import get_logger
-
+'''
 from enrollment.extract import extract_data
 from enrollment.transform import transform_data
 from enrollment.load import load_data
+'''
 
 logger = get_logger("MainPipeline")
 
+def main():
+    logger.info("Starting Data Pipeline Execution...")
+    source_conn = None
+    target_conn = None
+
+    try:
+        # CONNECT TO SOURCE
+        source_conn = get_db_connection("PeopleSoftCBM008Creation")
+        run_diagnostics(source_conn)
+
+        # READ FROM SOURCE
+        source_cursor = source_conn.cursor()
+        source_query = """
+            SELECT TOP (5)
+            FROM dbo.CBM008_BasicInfo_2
+        """
+        source_cursor.execute(source_query)
+
+        rows = source_cursor.fetchall()
+
+        logger.info(f"Retrieved {len(rows)} rows from source.")
+
+        source_cursor.close()
+
+        # CONNECT TO TARGET
+        target_conn = get_db_connection("TestDatabase_Sumi")
+        run_diagnostics(target_conn)
+
+        # WRITE TO TARGET
+        target_cursor = target_conn.cursor()
+
+        target_query = """
+
+        """
+        target_cursor.execute(target_query)
+
+
+        # COMMIT
+        target_conn.commit()
+
+        logger.info(f"Successfully inserted {len(rows)} rows.")
+
+        target_cursor.close()
+
+
+'''
 def main():
 
     # 1. Establish Database Connection & Run Diagnostics
     logger.info("Starting Data Pipeline Execution...")
 
     try:
-        # with get_db_connection() as conn:
-        #     run_diagnostics(conn)
-        conn = get_db_connection()
+        conn = get_db_connection("TestDatabase_Sumi")
         run_diagnostics(conn)
+
+        
+        # Test table read
+        #test_table_read(
+        #    conn,
+        #    schema="dbo",
+        #    table="tst_load"
+        #)
+        
+
         logger.info("Database connection and diagno completed successfully.")
 
-        # 2. Extract Data from Source Table
-        df = extract_data(conn, "Goldmine Extracts", "PartTerms")
-        logger.info(f"Extracted DataFrame shape: {df.shape}")
 
-        # 3. Transform Data
-        df = transform_data(df)
-
-        # 4. Load Data into Target Table
-        load_data(conn, df, "TestDatabase_Sumi", "tst_load")
-
-    finally:
+    #finally:
         if conn:
             conn.close()
             logger.info("Database connection closed.")
 
-    '''
+    
     except Exception as e:
         logger.critical(f"Pipeline failure: {e}", exc_info=True)
         sys.exit(1)
-    '''
-
-    '''
-    # 2. Extract Data from Source Table
-    df = extract_data(conn, "Goldmine Extracts", "PartTerms")
-    print(df.head())  # Display the first few rows of the extracted DataFrame
-
-    # 3. Load Data into Target Table
-
-    load_data(conn, df, "tst_load")
-    '''
+'''
 
 if __name__ == "__main__":
     main()

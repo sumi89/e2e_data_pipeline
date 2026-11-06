@@ -10,10 +10,10 @@ load_dotenv(dotenv_path)
 DB_DRIVER = os.getenv('MSSQL_DRIVER')
 #print(f"DB_DRIVER: {DB_DRIVER}")
 DB_SERVER = os.getenv('MSSQL_SERVER')
-DB_DATABASE = os.getenv('MSSQL_DATABASE')
+#DB_DATABASE = os.getenv('MSSQL_DATABASE')
 DB_TRUSTED_CONNECTION = os.getenv('MSSQL_TRUSTED_CONNECTION')
 
-
+'''
 # Construct ODBC connection string
 MSSQL_CONN_STR = (
     f"DRIVER={{{DB_DRIVER}}};"
@@ -39,3 +39,4 @@ TARGET_CONN_STR = (
     f"DATABASE={os.getenv('TARGET_DATABASE')};"
     f"Trusted_Connection={os.getenv('TARGET_TRUSTED_CONNECTION')};"
 )
+'''
